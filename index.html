@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ポケモンWeb図鑑</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+          show_order();
+        });
+        // function show_order() {
+        //   $("#pokemon-display").empty()
+        //   let offset = 0
+        //   for (let i = 0; i < 15; i++) {
+        //     console.log(offset)
+        //     fetch('/pokemons' + "?offset=" + offset).then((res) => res.json()).then((data) => {
+        //     //console.log(data)
+        //     let rows = data
+	      //       rows.forEach((a) => {
+        //       let name = a["name"]
+        //       let image_url = a["image_url"]
+        //       console.log(image_url)
+              
+        //       //let image = `<img src=\""${image_url}\"">`
+        //       let image = '<img src="' + image_url + '">'
+
+        //       let temp_html = `<tr>
+        //                 <td>${name}</td>
+        //                 <td>${image}</td>
+        //               </tr>`
+        //       $("#pokemon-display").append(temp_html)
+        //     })
+        //   })
+        //   offset = offset + 1
+        //   }
+        // }
+
+        async function show_order() {
+          $("#pokemon-display").empty()
+          let offset = 0
+          for (let i = 0; i < 15; i++) {
+            console.log(offset)
+            let data = await fetch('/pokemons' + "?offset="+ offset)
+            //console.log(data)
+            let rows = await data.json()
+	            rows.forEach((a) => {
+              let name = a["name"]
+              let image_url = a["image_url"]
+              console.log(image_url)
+              
+              //let image = `<img src=\""${image_url}\"">`
+              let image = '<img src="' + image_url + '">'
+
+              let temp_html = `<tr>
+                        <td>${name}</td>
+                        <td>${image}</td>
+                      </tr>`
+              $("#pokemon-display").append(temp_html)
+            })
+          offset = offset + 10
+          }
+        }
+      </script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center">ポケモンWeb図鑑</h1>
+        <div id="pokemon-display"></div>
+    </div>
+</body>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: radial-gradient(#F2B9A1, #EA6264 ) 
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+#pokemon-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    margin-top: 20px;
+}
+
+.pokemon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+}
+
+.pokemon-card h2 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.pokemon-card img {
+    max-width: 100px;
+    height: auto;
+}
+</style>
+
+</html>
